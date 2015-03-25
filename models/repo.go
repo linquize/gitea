@@ -158,7 +158,7 @@ type Repository struct {
 	IsMirror bool
 	*Mirror  `xorm:"-"`
 
-	IsFork   bool `xorm:"NOT NULL DEFAULT false"`
+	IsFork   bool `xorm:"NOT NULL DEFAULT 0"`
 	ForkId   int64
 	ForkRepo *Repository `xorm:"-"`
 

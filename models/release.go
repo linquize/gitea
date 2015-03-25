@@ -32,7 +32,7 @@ type Release struct {
 	NumCommits       int
 	NumCommitsBehind int    `xorm:"-"`
 	Note             string `xorm:"TEXT"`
-	IsDraft          bool   `xorm:"NOT NULL DEFAULT false"`
+	IsDraft          bool   `xorm:"NOT NULL DEFAULT 0"`
 	IsPrerelease     bool
 	Created          time.Time `xorm:"CREATED"`
 }
