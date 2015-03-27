@@ -71,6 +71,9 @@ func Migrate(x *xorm.Engine) error {
 	} else if !has {
 		// If the user table does not exist it is a fresh installation and we
 		// can skip all migrations.
+		if setting.UseMSSQL {
+			currentVersion = &Version{}
+		}
 		needsMigration, err := x.IsTableExist("user")
 		if err != nil {
 			return err
@@ -156,6 +159,8 @@ func accessToCollaboration(x *xorm.Engine) (err error) {
 			created, _ = time.Parse("2006-01-02 15:04:05-0700", string(result["created"])+offset)
 		case setting.UsePostgreSQL:
 			created, _ = time.Parse("2006-01-02T15:04:05Z-0700", string(result["created"])+offset)
+		case setting.UseMSSQL:
+			created, _ = time.Parse("2006-01-02 15:04:05-0700", string(result["created"])+offset)
 		}
 
 		// find owner of repository

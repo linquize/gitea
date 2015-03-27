@@ -15,6 +15,7 @@ import (
 	"github.com/go-xorm/core"
 	"github.com/go-xorm/xorm"
 	_ "github.com/lib/pq"
+	_ "github.com/denisenkom/go-mssqldb"
 
 	"github.com/gogits/gogs/models/migrations"
 	"github.com/gogits/gogs/modules/setting"
@@ -74,6 +75,8 @@ func LoadModelsConfig() {
 		setting.UseMySQL = true
 	case "postgres":
 		setting.UsePostgreSQL = true
+	case "mssql":
+		setting.UseMSSQL = true
 	}
 	DbCfg.Host = sec.Key("HOST").String()
 	DbCfg.Name = sec.Key("NAME").String()
@@ -113,6 +116,17 @@ func getEngine() (*xorm.Engine, error) {
 		}
 		os.MkdirAll(path.Dir(DbCfg.Path), os.ModePerm)
 		cnnstr = "file:" + DbCfg.Path + "?cache=shared&mode=rwc"
+	case "mssql":
+		var host, port = "127.0.0.1", "1433"
+		fields := strings.Split(DbCfg.Host, ":")
+		if len(fields) > 0 && len(strings.TrimSpace(fields[0])) > 0 {
+			host = fields[0]
+		}
+		if len(fields) > 1 && len(strings.TrimSpace(fields[1])) > 0 {
+			port = fields[1]
+		}
+		cnnstr = fmt.Sprintf("server=%s;port=%s;database=%s;user id=%s;password=%s",
+			host, port, DbCfg.Name, DbCfg.User, DbCfg.Passwd)
 	default:
 		return nil, fmt.Errorf("Unknown database type: %s", DbCfg.Type)
 	}

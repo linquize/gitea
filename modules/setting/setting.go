@@ -72,6 +72,7 @@ var (
 	UseSQLite3    bool
 	UseMySQL      bool
 	UsePostgreSQL bool
+	UseMSSQL      bool
 
 	// Webhook settings.
 	Webhook struct {
