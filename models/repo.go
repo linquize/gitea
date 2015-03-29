@@ -1012,6 +1012,7 @@ var (
 
 // MirrorUpdate checks and updates mirror repositories.
 func MirrorUpdate() {
+	log.Info("MirrorUpdate: %v\n", isMirrorUpdating)
 	if isMirrorUpdating {
 		return
 	}
@@ -1022,11 +1023,14 @@ func MirrorUpdate() {
 
 	if err := x.Iterate(new(Mirror), func(idx int, bean interface{}) error {
 		m := bean.(*Mirror)
+		log.Info("MirrorUpdate: %v", m.NextUpdate)
+		log.Info("Now: %v", time.Now())
 		if m.NextUpdate.After(time.Now()) {
 			return nil
 		}
 
 		repoPath := filepath.Join(setting.RepoRootPath, m.RepoName+".git")
+		log.Info("MirrorUpdate: %s", repoPath)
 		if _, stderr, err := process.ExecDir(10*time.Minute,
 			repoPath, fmt.Sprintf("MirrorUpdate: %s", repoPath),
 			"git", "remote", "update", "--prune"); err != nil {
@@ -1039,6 +1043,7 @@ func MirrorUpdate() {
 		}
 
 		m.NextUpdate = time.Now().Add(time.Duration(m.Interval) * time.Hour)
+		log.Info("New NextUpdate: %v", m.NextUpdate)
 		mirrors = append(mirrors, m)
 		return nil
 	}); err != nil {

@@ -24,6 +24,7 @@ func Parse(spec string) (_ Schedule, err error) {
 	}()
 
 	if spec[0] == '@' {
+		log.Printf("parser: %s\n", spec);
 		return parseDescriptor(spec), nil
 	}
 

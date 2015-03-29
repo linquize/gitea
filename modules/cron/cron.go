@@ -8,6 +8,7 @@ package cron
 import (
 	"sort"
 	"time"
+	"log"
 )
 
 // Cron keeps track of any number of entries, invoking the associated func as
@@ -144,6 +145,7 @@ func (c *Cron) run() {
 	now := time.Now().Local()
 	for _, entry := range c.entries {
 		entry.Next = entry.Schedule.Next(now)
+		log.Printf("run: %v\n", entry.Next)
 	}
 
 	for {
