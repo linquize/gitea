@@ -1012,6 +1012,7 @@ var (
 
 // MirrorUpdate checks and updates mirror repositories.
 func MirrorUpdate() {
+	log.Info("MirrorUpdate: !")
 	if isMirrorUpdating {
 		return
 	}
@@ -1027,6 +1028,7 @@ func MirrorUpdate() {
 		}
 
 		repoPath := filepath.Join(setting.RepoRootPath, m.RepoName+".git")
+		log.Info("MirrorUpdate: %s", repoPath)
 		if _, stderr, err := process.ExecDir(10*time.Minute,
 			repoPath, fmt.Sprintf("MirrorUpdate: %s", repoPath),
 			"git", "remote", "update", "--prune"); err != nil {
