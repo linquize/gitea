@@ -94,9 +94,9 @@ type LoginSource struct {
 	Id                int64
 	Type              LoginType
 	Name              string          `xorm:"UNIQUE"`
-	IsActived         bool            `xorm:"NOT NULL DEFAULT false"`
+	IsActived         bool            `xorm:"NOT NULL DEFAULT 0"`
 	Cfg               core.Conversion `xorm:"TEXT"`
-	AllowAutoRegister bool            `xorm:"NOT NULL DEFAULT false"`
+	AllowAutoRegister bool            `xorm:"NOT NULL DEFAULT 0"`
 	Created           time.Time       `xorm:"CREATED"`
 	Updated           time.Time       `xorm:"UPDATED"`
 }

@@ -73,7 +73,7 @@ type Action struct {
 	RepoUserName string
 	RepoName     string
 	RefName      string
-	IsPrivate    bool      `xorm:"NOT NULL DEFAULT false"`
+	IsPrivate    bool      `xorm:"NOT NULL DEFAULT 0"`
 	Content      string    `xorm:"TEXT"`
 	Created      time.Time `xorm:"created"`
 }
